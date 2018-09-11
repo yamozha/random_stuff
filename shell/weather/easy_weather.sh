@@ -8,3 +8,5 @@ if $Foremoon == "1"
    then "curl wttr.in/~Sofia"
 
 echo "hope you have nice day!!!"
+
+#this is a work in progress application.
