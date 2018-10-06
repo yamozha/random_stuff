@@ -1,3 +1,4 @@
+from config import *
 import discord
 import aiohttp
 from discord.ext import commands
@@ -33,10 +34,10 @@ async def on_message(message):
 
 @bot.command()
 async def code():
-    await bot.say("https://pastebin.com/6Wgh7Ua1")
+    await bot.say("https://github.com/yamozha/random_stuff/tree/beebot/BeeBot")
     await bot.say("^code^")
 
-bot.run("NDk4MjAyMDQ3OTUxMTQyOTIz.DpqYmw.pwDF_e4h4Ty7Hf0skKH2PX-GxPQ")
+bot.run(TOKEN)
 
 
 
