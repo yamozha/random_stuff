@@ -1,3 +1,4 @@
+from config import *
 import os
 import discord
 from discord.ext import commands
@@ -6,9 +7,8 @@ import json
 
 
 description = '''beebot'''
-bot = commands.Bot(command_prefix='b?', description=description)
-os.chdir(r'/Projects/random_stuff/BeeBot')
-
+bot = commands.Bot(command_prefix="b?", description=description)
+os.chdir(r"/home/pi/Projects/random_stuff/BeeBot")
 
 @bot.event
 async def on_ready():
@@ -16,6 +16,7 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
+    await bot.change_presence(game=discord.Game(name="b?help"), status=discord.Status("dnd"))
 
 @bot.command()
 async def nasty():
@@ -35,7 +36,7 @@ async def on_message(message):
 
 @bot.command()
 async def code():
-    await bot.say("https://pastebin.com/6Wgh7Ua1")
+    await bot.say("https://github.com/yamozha/random_stuff/tree/master/BeeBot")
     await bot.say("^code^")
 
 @bot.event
@@ -60,7 +61,7 @@ async def on_message(message):
      
      
      with open ("users.json", "w") as f:
-        json.dump(users,f)
+        json.dump(users, f)
     
 
 async def update_data(users, user):
@@ -69,8 +70,8 @@ async def update_data(users, user):
         users[user.id]["experience"]=0
         users[user.id]["level"] = 1
 
-async def add _experience(users, user, exp):
-    users[user.did]["experience"] += exp
+async def add_experience(users, user, exp):
+    users[user.id]["experience"] += exp
 
 
 async def level_up(users, user, channel):
@@ -82,7 +83,7 @@ async def level_up(users, user, channel):
     if level_start < level_end:
         await bot.send_message(channel, "{} has bee'd up to bee {}").format(user.mention, level_end)
         users[user.id]["level"] = level_end
-ddd
+
 
 bot.run("NDk4MjAyMDQ3OTUxMTQyOTIz.DpqYmw.pwDF_e4h4Ty7Hf0skKH2PX-GxPQ")
 
