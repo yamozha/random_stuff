@@ -43,7 +43,7 @@ async def code():
 async def on_member_join(member):
     with open("users.json", "r") as f:
         users = json.load(f)
-  
+
     await update_data(users, member)
 
     with open ("users.json", "w") as f:
@@ -51,41 +51,52 @@ async def on_member_join(member):
 
 @bot.event
 async def on_message(message):
-     with open("users.json", "r") as f:
+    users = {}
+    with open ("users.json", "r") as f:
         users = json.load(f)
-     
-     await update_data(users, message.author)
-     await add_experience(users, message.author, 5)
-     await level_up(users, message.author, message.channel)
+    with open ("users.json", "w") as f:
+        users = await update_data(users, message.author)
+        users = await add_experience(users, message.author, 5)
+        users = await level_up(users, message.author, message.channel)
 
-     
-     
-     with open ("users.json", "w") as f:
         json.dump(users, f)
-    
+
 
 async def update_data(users, user):
     if not user.id in users:
         users[user.id] = {}
-        users[user.id]["experience"]=0
+        users[user.id]["experience"]= 0
         users[user.id]["level"] = 1
+    return users
 
 async def add_experience(users, user, exp):
     users[user.id]["experience"] += exp
-
+    return users
 
 async def level_up(users, user, channel):
+    global bot
     experience = users [user.id]["experience"]
     level_start = users[user.id]["level"]
     level_end = int(experience ** (1/4))
 
 
     if level_start < level_end:
-        await bot.send_message(channel, "{} has bee'd up to bee {}").format(user.mention, level_end)
+        await bot.send_message(channel, "{} has bee'd up to bee {}".format(user.mention, level_end))
         users[user.id]["level"] = level_end
+    return users
+
+@bot.command()
+async def levelcheck(user):
+    with open("users.json", "r") as f:
+        users = json.load(f)
+
+    userlevel = users[user.id]
+
+    await bot.send_message(userlevel)
+
+
+
+
 
 
 bot.run(TOKEN)
-
-
-
