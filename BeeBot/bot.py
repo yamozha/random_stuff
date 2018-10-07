@@ -8,7 +8,7 @@ import json
 
 description = '''beebot'''
 bot = commands.Bot(command_prefix="b?", description=description)
-os.chdir(r"/home/pi/Projects/random_stuff/BeeBot")
+os.chdir(r"C:\Users\Yamozha\Documents\GitHub\random_stuff\BeeBot")
 
 @bot.event
 async def on_ready():
