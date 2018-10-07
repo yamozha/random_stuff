@@ -85,7 +85,7 @@ async def level_up(users, user, channel):
         users[user.id]["level"] = level_end
 
 
-bot.run("NDk4MjAyMDQ3OTUxMTQyOTIz.DpqYmw.pwDF_e4h4Ty7Hf0skKH2PX-GxPQ")
+bot.run(TOKEN)
 
 
 
