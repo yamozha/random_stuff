@@ -1,11 +1,13 @@
+import os
 import discord
-import aiohttp
 from discord.ext import commands
 import asyncio
+import json
+
 
 description = '''beebot'''
 bot = commands.Bot(command_prefix='b?', description=description)
-
+os.chdir(r'/Projects/random_stuff/BeeBot')
 
 
 @bot.event
@@ -35,6 +37,15 @@ async def on_message(message):
 async def code():
     await bot.say("https://pastebin.com/6Wgh7Ua1")
     await bot.say("^code^")
+
+@bot.event
+async def on_member_join(member):
+
+
+@bot.event
+async def on_message(message):
+
+
 
 bot.run("NDk4MjAyMDQ3OTUxMTQyOTIz.DpqYmw.pwDF_e4h4Ty7Hf0skKH2PX-GxPQ")
 
