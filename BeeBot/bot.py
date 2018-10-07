@@ -5,10 +5,12 @@ from discord.ext import commands
 import asyncio
 import json
 
-
 description = '''beebot'''
 bot = commands.Bot(command_prefix="b?", description=description)
-os.chdir(r"C:\Users\Yamozha\Documents\GitHub\random_stuff\BeeBot")
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+userExpData = {}
+
 
 @bot.event
 async def on_ready():
@@ -16,87 +18,88 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
-    await bot.change_presence(game=discord.Game(name="b?help"), status=discord.Status("dnd"))
+    await bot.change_presence(
+        game=discord.Game(name="b?help"), status=discord.Status("dnd"))
+
 
 @bot.command()
 async def nasty():
-     await bot.say("yeet")
+    await bot.say("yeet")
 
 
 @bot.listen()
 async def on_message(message):
-     if "bee" in message.content:
-         await bot.send_file(message.channel,"./bee.png")
-
-
-@bot.listen()
-async def on_message(message):
+    if "bee" in message.content:
+        await bot.send_file(message.channel, "./bee.png")
     if "thanos car" in message.content:
-	    await bot.say("fuck you")
+        await bot.say(message.channel, "fuck you")
+
 
 @bot.command()
-async def code():
+async def code(message):
     await bot.say("https://github.com/yamozha/random_stuff/tree/master/BeeBot")
     await bot.say("^code^")
 
+
 @bot.event
 async def on_member_join(member):
-    with open("users.json", "r") as f:
-        users = json.load(f)
+    update_data(member)
 
-    await update_data(users, member)
-
-    with open ("users.json", "w") as f:
-        json.dump(users,f)
 
 @bot.event
 async def on_message(message):
-    users = {}
-    with open ("users.json", "r") as f:
-        users = json.load(f)
-    with open ("users.json", "w") as f:
-        users = await update_data(users, message.author)
-        users = await add_experience(users, message.author, 5)
-        users = await level_up(users, message.author, message.channel)
+    update_data(message.author)
+    add_experience(message.author, 5)
+    await level_up(message.author, message.channel)
+    await bot.process_commands(message)
 
-        json.dump(users, f)
+def load_user_data():
+    global userExpData
+    with open("users.json", "r") as f:
+        userExpData = json.load(f)
 
 
-async def update_data(users, user):
-    if not user.id in users:
-        users[user.id] = {}
-        users[user.id]["experience"]= 0
-        users[user.id]["level"] = 1
-    return users
+def save_user_data():
+    global userExpData
+    with open("users.json", "w") as f:
+        json.dump(userExpData, f)
 
-async def add_experience(users, user, exp):
-    users[user.id]["experience"] += exp
-    return users
 
-async def level_up(users, user, channel):
-    global bot
-    experience = users [user.id]["experience"]
-    level_start = users[user.id]["level"]
-    level_end = int(experience ** (1/4))
+def update_data(user):
+    global userExpData
+    if not user.id in userExpData:
+        userExpData[user.id] = {
+            'experience': 0,
+            'level': 1,
+        }
 
+
+def add_experience(user, exp):
+    global userExpData
+    userExpData[user.id]["experience"] += exp
+
+
+async def level_up(user, channel):
+    global bot, userExpData
+    experience = userExpData[user.id]["experience"]
+    level_start = userExpData[user.id]["level"]
+    level_end = int(experience**(1 / 4))
 
     if level_start < level_end:
-        await bot.send_message(channel, "{} has bee'd up to bee {}".format(user.mention, level_end))
-        users[user.id]["level"] = level_end
-    return users
+        await bot.send_message(channel, "{} has bee'd up to bee {}".format(
+            user.mention, level_end))
+        userExpData[user.id]["level"] = level_end
 
-@bot.command()
-async def levelcheck(user):
-    with open("users.json", "r") as f:
-        users = json.load(f)
 
-    userlevel = users[user.id]
-
-    await bot.send_message(userlevel)
+@bot.command(pass_context=True)
+async def levelcheck(context):
+    global userExpData, bot
+    await bot.send_message(context.message.channel,
+        userExpData[context.message.author.id]["level"])
 
 
 
-
-
-
+load_user_data()
 bot.run(TOKEN)
+bot.close()
+save_user_data()
