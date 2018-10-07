@@ -1,1 +1,1 @@
-TOKEN = "NDk4MjAyMDQ3OTUxMTQyOTIz.DpudFw.Awc6bmIZomZsUkEdZTEzSQjxqgo"
+TOKEN = "enter-token"
