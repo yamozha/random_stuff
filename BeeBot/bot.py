@@ -40,11 +40,15 @@ async def code():
 
 @bot.event
 async def on_member_join(member):
+    with open("users.json", "r") as f:
+        users = json.load(f)
+
 
 
 @bot.event
 async def on_message(message):
-
+    with open ("users.json", "w") as f:
+        json.dump(users,f)
 
 
 bot.run("NDk4MjAyMDQ3OTUxMTQyOTIz.DpqYmw.pwDF_e4h4Ty7Hf0skKH2PX-GxPQ")
