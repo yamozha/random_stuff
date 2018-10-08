@@ -23,22 +23,22 @@ async def on_ready():
 
 
 @bot.command()
-"""yeet"""
 async def nasty():
-    await bot.say("yeet")
+    """yeet"""
+    await bot.say(":bee: yeet :bee:")
 
 
 @bot.listen()
 async def on_message(message):
     if "thanos car" in message.content:
-        await bot.say(message.channel, "fuck you")
+        await bot.say(message.channel, ":bee: fuck you :bee: ")
 
 
 @bot.command()
-"""Code repository"""
 async def code(message):
+    """Code repository"""
     await bot.say("https://github.com/yamozha/random_stuff/tree/master/BeeBot")
-    await bot.say("^code^")
+    await bot.say(":bee: ^code^ :bee:")
 
 
 @bot.event
@@ -86,20 +86,20 @@ async def level_up(user, channel):
     level_end = int(experience**(1 / 4))
 
     if level_start < level_end:
-        await bot.send_message(channel, "{} has bee'd up to bee {}".format(
+        await bot.send_message(channel, ":bee: {} has bee'd up to bee {} :bee:".format(
             user.mention, level_end))
         userExpData[user.id]["level"] = level_end
 
 
 @bot.command(pass_context=True)
 async def levelcheck(context):
+    """Checks your level"""
     global userExpData, bot
-    await bot.send_message(context.message.channel, "Your level is:")
+    await bot.say(":bee: Your level is :bee:")
     await bot.send_message(context.message.channel,
 	userExpData[context.message.author.id]["level"])
 
 async def perma_save():
-"""Checks your level"""
     await asyncio.sleep(30)
     save_user_data()
     await perma_save()
