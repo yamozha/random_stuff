@@ -23,19 +23,19 @@ async def on_ready():
 
 
 @bot.command()
+"""yeet"""
 async def nasty():
     await bot.say("yeet")
 
 
 @bot.listen()
 async def on_message(message):
-    if "bee" in message.content:
-        await bot.send_file(message.channel, "./bee.png")
     if "thanos car" in message.content:
         await bot.say(message.channel, "fuck you")
 
 
 @bot.command()
+"""Code repository"""
 async def code(message):
     await bot.say("https://github.com/yamozha/random_stuff/tree/master/BeeBot")
     await bot.say("^code^")
@@ -94,12 +94,19 @@ async def level_up(user, channel):
 @bot.command(pass_context=True)
 async def levelcheck(context):
     global userExpData, bot
+    await bot.send_message(context.message.channel, "Your level is:")
     await bot.send_message(context.message.channel,
-        userExpData[context.message.author.id]["level"])
+	userExpData[context.message.author.id]["level"])
 
+async def perma_save():
+"""Checks your level"""
+    await asyncio.sleep(30)
+    save_user_data()
+    await perma_save()
 
 
 load_user_data()
+bot.loop.call_soon(perma_save)
 bot.run(TOKEN)
 bot.close()
 save_user_data()
